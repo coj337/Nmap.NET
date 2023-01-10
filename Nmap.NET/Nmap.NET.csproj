@@ -2,6 +2,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Nmap.NET</Title>
+    <Description>A simple modern .NET wrapper for nmap.</Description>
+    <PackageProjectUrl>https://github.com/coj337/nmap.net</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Simple.DotNMap">
