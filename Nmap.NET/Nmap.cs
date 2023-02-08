@@ -619,6 +619,7 @@ namespace Nmap.NET
                 process.StartInfo.FileName = Path;
                 process.StartInfo.Arguments = string.Format("{0} {1}", Options, Target);
                 process.StartInfo.WindowStyle = WindowStyle;
+                process.StartInfo.UseShellExecute = false;
                 process.Start();
                 process.WaitForExit();
 
