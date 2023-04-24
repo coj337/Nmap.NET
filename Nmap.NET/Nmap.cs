@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Simple.DotNMap;
 using Simple.DotNMap.Extensions;
@@ -553,8 +554,18 @@ namespace Nmap.NET
         /// <returns>The path to the file if it is found, the empty string otherwise</returns>
         private static string LocateExecutable(string filename)
         {
-            string path = Environment.GetEnvironmentVariable("path");
-            string[] folders = path.Split(';');
+            string path;
+            string[] folders;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                path = Environment.GetEnvironmentVariable("path"); // Windows is lowercase
+                folders = path.Split(';'); // Windows uses semicolons
+            }
+            else
+            {
+                path = Environment.GetEnvironmentVariable("PATH"); // Linux is uppercase
+                folders = path.Split(':'); // Linux uses colons
+            }
 
             foreach (string folder in folders)
             {
@@ -574,7 +585,12 @@ namespace Nmap.NET
         /// <returns>The path to the nmap executable or the empty string if it cannot be located</returns>
         public string GetPathToNmap()
         {
-            return LocateExecutable("nmap.exe");
+            var path = LocateExecutable("nmap.exe");
+            if(string.IsNullOrEmpty(path))
+            {
+                path = LocateExecutable("nmap");
+            }
+            return path;
         }
 
         /// <summary>
